@@ -34,12 +34,20 @@
             <input id='loc_date_heure_debut' name='loc_date_heure_debut' type='dateTime' size='50' value='<?php echo date('Y-m-d'); ?>' class='form-control' />
         </div>
         <div class="col">
+            <label for="heureDebut">Heure de début</label>
+            <input type="time" name="heureDebut" id="heureDebut">
+        </div>
+        <div class="col">
             <label for='loc_date_heure_fin'>Date retour</label>
             <input id='loc_date_heure_fin' name='loc_date_heure_fin' type='date' size='50' value='<?php echo date('Y-m-d'); ?>' class='form-control' />
         </div>
+        <div class="col">
+            <label for="heureFin">Heure de fin</label>
+            <input type="time" name="heureFin" id="heureFin">
+        </div>
     </div>
     <div>
-        <input class="btn btn-success" type="submit" name="chercher" id="chercher" value="voir" />
+        <input class="btn btn-success" type="submit" name="chercher" id="chercher" value="chercher" />
     </div>
 
 
@@ -50,9 +58,9 @@
     let selectDept = document.getElementById("dep_id");
     selectDept.addEventListener("change", initVille);
 
-    let dateDebut = document.getElementById("loc_date_heure_debut"); 
-    dateDebut.addEventListener("input", initDateFin); 
-    let dateFin = document.getElementById("loc_date_heure_fin"); 
+    let dateDebut = document.getElementById("loc_date_heure_debut");
+    dateDebut.addEventListener("input", initDateFin);
+    let dateFin = document.getElementById("loc_date_heure_fin");
 
     //select : liste des villes du département sélectionné
     let selectVille = document.getElementById("age_id_depart");
@@ -62,7 +70,7 @@
     function initVille() {
         let xmlhttp = new XMLHttpRequest();
         let url = "<?= hlien('accueil', 'ville') ?>&dept=" + selectDept.value;
-        console.log(url); 
+        console.log(url);
         xmlhttp.open("GET", url, true);
         xmlhttp.onreadystatechange = mafonction;
         xmlhttp.send();
@@ -74,8 +82,8 @@
             }
         }
     }
-    function initDateFin(){
-        dateFin.min = dateDebut.value; 
-    }
 
+    function initDateFin() {
+        dateFin.min = dateDebut.value;
+    }
 </script>

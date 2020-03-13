@@ -14,12 +14,15 @@ class Ctr_accueil extends Ctr_controleur
         if (isset($_POST["chercher"])) {
             extract($_POST);
             $_SESSION['cat_id'] = $cat_id;
-            $_SESSION['age_arrive'] = $age_id;
-            $_SESSION['age_depart'] = $age_id;
+            $_SESSION['dept'] = $dep_id;
+            $_SESSION['age_arrive'] = $age_id_arrivee;
+            $_SESSION['age_depart'] = $age_id_depart;
             $_SESSION['loc_date_heure_debut'] = $loc_date_heure_debut;
             $_SESSION['loc_date_heure_fin'] = $loc_date_heure_fin;
+            $_SESSION["heueDebut"] = $heureDebut;
+            $_SESSION["heureFin"] = $heureFin;
 
-            //header("location:" . hlien("accueil", "resultat"));  
+            header("location:" . hlien("accueil", "chercher"));
         } else {
             echo "<p>Text a afficher</p>";
         }
@@ -41,13 +44,18 @@ class Ctr_accueil extends Ctr_controleur
         if (isset($_POST["chercher"])) {
             extract($_POST);
             $_SESSION['cat_id'] = $cat_id;
-            $_SESSION['age_arrive'] = $age_id;
-            $_SESSION['age_depart'] = $age_id;
+            $_SESSION['dept'] = $dep_id;
+            $_SESSION['age_arrive'] = $age_id_arrivee;
+            $_SESSION['age_depart'] = $age_id_depart;
             $_SESSION['loc_date_heure_debut'] = $loc_date_heure_debut;
             $_SESSION['loc_date_heure_fin'] = $loc_date_heure_fin;
-            $result = Vehicule::vehiculeDispo($cat_id, $age_id, $loc_date_heure_debut, $loc_date_heure_fin);
-            require $this->gabarit;
+            $_SESSION["heueDebut"] = $heureDebut;
+            $_SESSION["heureFin"] = $heureFin;
+            $result = Vehicule::vehiculeDispo($_SESSION["cat_id"], $_SESSION['age_depart'], $_SESSION['loc_date_heure_debut'], $_SESSION['loc_date_heure_fin']);
+        } else {
+            $result = Vehicule::vehiculeDispo($_SESSION["cat_id"], $_SESSION['age_depart'], $_SESSION['loc_date_heure_debut'], $_SESSION['loc_date_heure_fin']);
         }
+        require $this->gabarit;
     }
 
     function a_reservation()
@@ -58,6 +66,7 @@ class Ctr_accueil extends Ctr_controleur
 
     function a_edit()
     {
+        /*
         if (isset($_POST["btsubmit"])) {
             extract($_POST);
 
@@ -76,6 +85,7 @@ class Ctr_accueil extends Ctr_controleur
         } else {
             $use_id = "";
         }
+        */
 
         require $this->gabarit;
     }
