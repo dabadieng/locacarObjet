@@ -2,6 +2,7 @@
 <?php
 foreach ($result as $row) {
     extract($row);
+    $prix=mhe($row['prix']);
 } ?>
 
 <div>
@@ -14,59 +15,77 @@ foreach ($result as $row) {
         <li>Date depart: <?= mhe($_SESSION['loc_date_heure_debut']) ?></li>
         <li>Date arrive: <?= mhe($_SESSION['loc_date_heure_fin']) ?></li>
     </ul>
-    <h3>prix (sans option): <?= mhe($row['prix']) ?></h3>
+    <h3>prix (sans option): <?= $prix ?></h3>
 </div>
 <?php
 foreach ($options as $row) {
     extract($row); ?>
 
     <p>
-        <label for='<?=mhe($row["opt_nom"])?>'><?=mhe($row["opt_nom"])?> Prix: <?=mhe($row["opt_tarif"])?> €</label>
-        <input type='checkbox' name='<?=mhe($row["opt_nom"])?>' id='<?=mhe($row["opt_nom"])?>'/>
+        <label for='<?= mhe($row["opt_nom"]) ?>'><?= mhe($row["opt_nom"]) ?> Prix: <?= mhe($row["opt_tarif"]) ?> €</label>
+        <input type='checkbox' name='<?= mhe($row["opt_nom"]) ?>' id='<?= mhe($row["opt_nom"]) ?>' value='<?= mhe($row["opt_tarif"]) ?>' />
     </p>
 
 <?php  } ?>
 
-
-<h3>Prix total: </h3>
-<form method="post" action="<?= hlien("location", "index") ?>">
+<h3>Prix options</h3>
+<h3 id='prixopt'>0</h3> 
+<h2>Prix total: </h2>
+<h3 id='prixtotal'><?=$prix?></h3> 
+<form method="post" action="<?= hlien("accueil", "edit") ?>">
     <div class="row mb-3"></div>
-
     <input class="btn btn-warning" type="submit" name="annuler" id="annuler" value="Annuler" />
     <input class="btn btn-success" type="submit" name="valider" id="valider" value="valider" />
-
 </form>
-<script>
+
+<script  type="text/javascript">
     //checkbox
     let listeInput = document.querySelectorAll("input[type=checkbox]");
+    let montanttotal=document.getElementById("prixtotal");
+    let prixtotal= parseInt(<?php echo json_encode($prix); ?>);
+    let prixopt=document.getElementById("prixopt");
+    let p=0;
     listeInput.forEach(elt => {
-    elt.checked = true;
-    elt.addEventListener("click", calculerPrix);
-});
 
-    function calculerPrix(){
-
-    }
-console.log(listeInput);
-
-
-
-
-    //multiselection
-    let listInput = document.getElementById('options');
-    let listOption = listInput.querySelectorAll('option');
-    listInput.addEventListener("change", filterByKeyword);
-
-    function filterByKeyword(e) {
-        listtr.forEach(tr => tr.style.display = "none");
-
-        listOption.forEach(elt => {
-            if (elt.selected) {
-                listtr.forEach(tr => {
-                    if (tr.className.includes(elt.value))
-                        tr.style.display = "table-row";
-                });
-            }
+        elt.addEventListener("change", function() {
+           
+              if(elt.checked){
+                prixtotal+=parseInt(elt.value);
+                p+=parseInt(elt.value);
+                prixopt.innerHTML=p;
+              } 
+              if(!elt.checked) {
+                prixtotal-=parseInt(elt.value);
+                p-=parseInt(elt.value);
+                prixopt.innerHTML=p;
+                
+              }           
+              montanttotal.innerHTML=prixtotal;
+             
+              console.log(prixtotal);
+               
         });
-    }
+
+    });
+    $(document).ready(function () { 
+      createCookie("prixtotal", prixtotal, "1");
+      createCookie("prixopt", prixopt, "1"); 
+  }); 
+
+    function createCookie(name, value, days) { 
+     let expires; 
+        
+      if (days) { 
+          let date = new Date(); 
+          date.setTime(date.getTime() + (days * 60 * 1000)); 
+          expires = "; expires=" + date.toGMTString(); 
+      } 
+      else { 
+          expires = ""; 
+      } 
+        
+      document.cookie = escape(name) + "=" +  
+          escape(value) + expires + "; path=/"; 
+  } 
+
 </script>

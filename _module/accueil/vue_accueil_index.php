@@ -17,7 +17,7 @@
         <div class="col">
             <label for='age_id_depart'>Agence de départ</label>
             <select class="form-control" id='age_id_depart' name='age_id_depart'>
-                <?= Entity::HTMLselect("select age_id, age_nom from agence", "age_id", "age_nom", $age_id); ?>
+                <?= Entity::HTMLselect("select * from agence", "age_id", "age_nom", $age_id); ?>
             </select>
         </div>
         <div class="col">
@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col">
             <label for='loc_date_heure_debut'>Date depart</label>
-            <input id='loc_date_heure_debut' name='loc_date_heure_debut' type='dateTime' size='50' value='<?php echo date('Y-m-d'); ?>' class='form-control' />
+            <input id='loc_date_heure_debut' name='loc_date_heure_debut' type='date' size='50' value='<?php echo date('Y-m-d'); ?>' class='form-control' />
         </div>
         <div class="col">
             <label for="heureDebut">Heure de début</label>
